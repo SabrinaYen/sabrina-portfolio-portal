@@ -1,12 +1,16 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/login";
-// import AdminDashboard from "./pages/admin-dashboard";
+import Dashboard from "./pages/dashboard";
+import ProtectedRoute from "./auth/auth-provider";
 function App() {
 
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      {/* <Route path="/admin" element={<AdminDashboard />} /> */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Route>
     </Routes>
   )
 }

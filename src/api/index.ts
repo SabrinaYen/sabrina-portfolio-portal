@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8000", // your FastAPI server
+  baseURL: "http://127.0.0.1:8000", // your FastAPI server
 });
 
 // attach the token automatically on every request
@@ -13,4 +13,12 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export default api;
+const API_URL = {
+    Login:"/login",
+    Checkpoint: "/me"
+}
+
+export {
+    api,
+    API_URL
+};

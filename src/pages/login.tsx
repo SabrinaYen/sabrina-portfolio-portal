@@ -1,4 +1,24 @@
+import { useState } from "react";
+import { api, API_URL } from "../api";
+import { useNavigate } from "react-router-dom";
 function Login() {
+    const navigate = useNavigate();
+    const [username, setUserName] = useState("");
+    const [password, setPassword] = useState("");
+    const [isShwPwd, setIsShwPwd] = useState(false);
+    const handleSubmit = async (e: React.BaseSyntheticEvent) => {
+        e.preventDefault();
+        const req = await api.post(API_URL.Login, { username: username, password: password })
+        console.log(req);
+        if(req?.status === 200) {
+            const {access_token} = req?.data || {};
+            sessionStorage.setItem("access_token",access_token);
+            navigate("/dashboard");
+        }
+    }
+    const handleShowPwd = () => {
+        setIsShwPwd(!isShwPwd);
+    }
     return (
         <div className="min-h-screen flex">
             {/* Left panel */}
@@ -38,15 +58,16 @@ function Login() {
                     <h2 className="text-3xl font-bold text-gray-900">Sign in</h2>
                     <p className="text-gray-500 mt-1 mb-8">Manage your portfolio content.</p>
 
-                    <form className="space-y-5">
+                    <form className="space-y-5" onSubmit={(e) => handleSubmit(e)}>
                         <div>
                             <label className="block text-xs font-semibold tracking-wide text-gray-600 mb-1">
                                 EMAIL
                             </label>
                             <input
-                                type="email"
-                                placeholder="you@example.com"
+                                type="text"
+                                placeholder="user1234"
                                 className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                onChange={(e) => setUserName(e.target.value)}
                             />
                         </div>
 
@@ -56,13 +77,15 @@ function Login() {
                             </label>
                             <div className="relative">
                                 <input
-                                    type="password"
+                                    type={isShwPwd ? "text" : "password"}
                                     placeholder="••••••••"
                                     className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
                                 <button
                                     type="button"
                                     className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 font-medium"
+                                    onClick={handleShowPwd}
                                 >
                                     Show
                                 </button>
