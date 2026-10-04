@@ -10,6 +10,7 @@ interface User {
 interface AuthState {
     user: User | null;
     loading: boolean;
+    login: (token: string) => Promise<void>;
     logout: () => void;
 }
 
@@ -21,13 +22,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     async function loadUser() {
         try {
-
-            setUser(await api.post(API_URL.Checkpoint, { username: localStorage.getItem("username") }));
+            const req = await api.post(API_URL.Checkpoint);
+            const {username} = req?.data || {};
+            setUser(username);
         } catch {
             setUser(null);
         } finally {
             setLoading(false);
         }
+    }
+    async function login(token:string) {
+        localStorage.setItem("access_token",token);
+        await loadUser();
     }
     function logout() {
         localStorage.removeItem("access_token");
@@ -35,10 +41,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         if (localStorage.getItem("token")) loadUser();
         else setLoading(false);
-    }, []);
+    }, [user]);
 
     return (
-        <AuthContext.Provider value={{ user, loading, logout }}>
+        <AuthContext.Provider value={{ user, loading, login, logout }}>
             {children}
         </AuthContext.Provider>
     )

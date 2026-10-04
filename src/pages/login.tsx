@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { api, API_URL } from "../api";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/auth-provider";
 function Login() {
     const navigate = useNavigate();
+    const {login} = useAuth();
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [isShwPwd, setIsShwPwd] = useState(false);
     const handleSubmit = async (e: React.BaseSyntheticEvent) => {
         e.preventDefault();
         const req = await api.post(API_URL.Login, { username: username, password: password })
-        console.log(req);
         if(req?.status === 200) {
             const {access_token} = req?.data || {};
-            sessionStorage.setItem("access_token",access_token);
-            navigate("/dashboard");
+            login(access_token);
+            navigate("/dashboard",{ replace: true });
         }
     }
     const handleShowPwd = () => {
