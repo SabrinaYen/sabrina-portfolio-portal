@@ -4,17 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/auth-provider";
 function Login() {
     const navigate = useNavigate();
-    const {login} = useAuth();
+    const { login } = useAuth();
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [isShwPwd, setIsShwPwd] = useState(false);
     const handleSubmit = async (e: React.BaseSyntheticEvent) => {
         e.preventDefault();
         const req = await api.post(API_URL.Login, { username: username, password: password })
-        if(req?.status === 200) {
-            const {access_token} = req?.data || {};
-            login(access_token);
-            navigate("/dashboard",{ replace: true });
+        if (req?.status === 200) {
+            const { access_token } = req?.data || {};
+            await login(access_token);
+            navigate("/dashboard", { replace: true });
         }
     }
     const handleShowPwd = () => {

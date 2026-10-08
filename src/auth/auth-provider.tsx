@@ -23,7 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async function loadUser() {
         try {
             const req = await api.post(API_URL.Checkpoint);
-            const {username} = req?.data || {};
+            const { username } = req?.data || {};
             setUser(username);
         } catch {
             setUser(null);
@@ -31,15 +31,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setLoading(false);
         }
     }
-    async function login(token:string) {
-        localStorage.setItem("access_token",token);
+    async function login(token: string) {
+        localStorage.setItem("access_token", token);
         await loadUser();
     }
     function logout() {
         localStorage.removeItem("access_token");
     }
     useEffect(() => {
-        if (localStorage.getItem("token")) loadUser();
+        if (localStorage.getItem("access_token")) loadUser();
         else setLoading(false);
     }, [user]);
 
@@ -56,7 +56,8 @@ export function useAuth() {
     return ctx;
 }
 export default function ProtectedRoute() {
-  const { user, loading } = useAuth();
-  if (loading) return <p>Loading...</p>;
-  return user ? <Outlet /> : <Navigate to="/login" replace />;
+    const { user, loading } = useAuth();
+    console.log("test",user)
+    if (loading) return <p>Loading...</p>;
+    return user ? <Outlet /> : <Navigate to="/login" replace />;
 }
