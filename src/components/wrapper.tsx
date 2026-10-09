@@ -5,8 +5,8 @@ import { useAuth } from "../auth/auth-provider";
 const links = [
   { to: "/dashboard", label: "Dashboard" },
   { to: "/projects", label: "Projects" },
-  { to: "/content", label: "Content" },
-  { to: "/settings", label: "Settings" },
+  { to: "/site-content", label: "Content" },
+  { to: "/setting", label: "Settings" },
 ];
 
 export default function AppShell() {
