@@ -1,7 +1,7 @@
 function SiteContent() {
     const pageTitle = "Site content";
     return (<>
-        <header className="w-full p-3 border-b-1 border-b-[#e2e8f2] flex justify-between items-center">
+        <header className="w-full p-3 border-b-1 border-b-[#e2e8f2] flex justify-between items-center sticky top-0 bg-white">
             <label className="text-[#5a6b87] text-[13px] font-semibold">{pageTitle}</label>
             <button className="h-full bg-[#2563eb] text-[13px] px-[16px] py-[9px] rounded-lg text-white">Save changes</button>
         </header>
