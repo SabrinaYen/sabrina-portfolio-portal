@@ -85,7 +85,7 @@ function Login() {
                                 />
                                 <button
                                     type="button"
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 font-medium"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-500 font-medium cursor-pointer"
                                     onClick={handleShowPwd}
                                 >
                                     Show
@@ -95,7 +95,7 @@ function Login() {
 
                         <button
                             type="submit"
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg py-3 transition-colors"
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg py-3 transition-colors cursor-pointer"
                         >
                             Sign in
                         </button>

@@ -15,7 +15,8 @@ api.interceptors.request.use((config) => {
 
 const API_URL = {
     Login:"/login",
-    Checkpoint: "/me"
+    Checkpoint: "/me",
+    GetParam:"/get-param"
 }
 
 export {
