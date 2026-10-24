@@ -16,7 +16,10 @@ api.interceptors.request.use((config) => {
 const API_URL = {
     Login:"/login",
     Checkpoint: "/me",
-    GetParam:"/get-param"
+    GetParam:"/get-param",
+    GetCompanyList:"/get-company-list",
+    AddCompany:"/add-company",
+    DeleteCompany: "/delete-company"
 }
 
 export {
