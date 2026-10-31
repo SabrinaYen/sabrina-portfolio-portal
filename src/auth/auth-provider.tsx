@@ -23,8 +23,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async function loadUser() {
         try {
             const req = await api.post(API_URL.Checkpoint);
-            const { username } = req?.data || {};
-            setUser(username);
+            setUser(req.data?.username ? { username: req.data.username } : null);
         } catch {
             setUser(null);
         } finally {
@@ -37,11 +36,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     function logout() {
         localStorage.removeItem("access_token");
+        setUser(null);
     }
     useEffect(() => {
         if (localStorage.getItem("access_token")) loadUser();
         else setLoading(false);
-    }, [user]);
+    }, []); // login() loads the user itself
 
     return (
         <AuthContext.Provider value={{ user, loading, login, logout }}>
@@ -57,7 +57,6 @@ export function useAuth() {
 }
 export default function ProtectedRoute() {
     const { user, loading } = useAuth();
-    console.log("test",user)
     if (loading) return <p>Loading...</p>;
     return user ? <Outlet /> : <Navigate to="/login" replace />;
 }

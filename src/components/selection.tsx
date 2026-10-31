@@ -93,7 +93,7 @@ const Selection = ({
                 className={`w-full rounded-lg border border-[#e2e8f2] bg-white px-3 py-2 text-[13px] text-[#1b2b47] outline-none transition placeholder:text-[#94a3b8] focus:border-[#2563eb] focus:ring-2 focus:ring-[#2563eb]/15 ${className}`}
                 placeholder={placeholder}
                 value={isOpen ? query : selectedLabel}
-                onFocus={handleBlur}
+                onFocus={() => setIsOpen(true)}
                 onChange={(event) => {
                     setQuery(event.target.value);
                     setIsOpen(true);
@@ -110,9 +110,8 @@ const Selection = ({
                         const optionValue = getOptionValue(option);
                         const optionLabel = getOptionLabel(option);
                         return (
-                            <div className={`flex flex-row px-5 hover:bg-[#f4f6fb] transition focus:bg-[#f4f6fb] focus:outline-none ${optionValue === value ? "bg-[#eff6ff] font-medium text-[#2563eb]" : "text-[#1b2b47]"}`}>
+                            <div key={optionValue} className={`flex flex-row px-5 hover:bg-[#f4f6fb] transition focus:bg-[#f4f6fb] focus:outline-none ${optionValue === value ? "bg-[#eff6ff] font-medium text-[#2563eb]" : "text-[#1b2b47]"}`}>
                                 <div
-                                    key={optionValue}
                                     aria-selected={optionValue === value}
                                     className={`w-full p-2 text-[13px] `}
                                     onMouseDown={(event) => event.preventDefault()}

@@ -4,7 +4,6 @@ import { useAuth } from "../auth/auth-provider";
 
 const links = [
   { to: "/dashboard", label: "Dashboard" },
-  { to: "/projects", label: "Projects" },
   { to: "/site-content", label: "Content" },
   { to: "/setting", label: "Settings" },
 ];
@@ -15,7 +14,7 @@ export default function AppShell() {
 
   return (
     <div className="min-h-screen flex">
-      <aside className="w-[240px] bg-[#182a4e] text-white flex flex-col justify-between">
+      <aside className="sticky top-0 h-screen w-[240px] shrink-0 bg-[#182a4e] text-white flex flex-col justify-between">
         <div>
           <div className="flex gap-3 items-center border-b-1 border-b-[#ffffff14] p-4">
             <span className="p-3 border rounded-2xl border-none bg-[#E8452C]">SY</span>
@@ -37,14 +36,12 @@ export default function AppShell() {
           </ul>
         </div>
         <div className="p-3">
+          <div className="mb-3 px-2 text-[12px] text-[#a8b9d4]">Signed in as <b className="text-white">{user?.username}</b></div>
           <button className="border rounded-lg border-[#a8b9d4] w-[100%] py-2 text-[#a8b9d4] text-[13px]" onClick={logout}>Sign out</button>
         </div>
       </aside>
 
-      <div style={{ flex: 1 }}>
-        <header>
-          <span>{user?.username}</span>
-        </header>
+      <div className="min-w-0 flex-1">
         <main>
           <Outlet />
         </main>
