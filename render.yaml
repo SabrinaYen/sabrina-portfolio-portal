@@ -1,0 +1,15 @@
+# Render Blueprint: hosts the portal as a free static site.
+services:
+  - type: web
+    name: sabrina-portfolio-portal
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL   # the live API (baked into the build)
+        value: https://sabrina-portfolio-api.onrender.com
+    routes:
+      # the portal has pages like /site-content: always serve index.html
+      - type: rewrite
+        source: /*
+        destination: /index.html
