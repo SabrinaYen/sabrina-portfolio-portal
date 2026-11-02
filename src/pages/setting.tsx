@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { api, API_URL } from "../api";
 import { errorMessage, getCompanies } from "../api/content";
 import { useAuth } from "../auth/auth-provider";
+import LoadingScreen from "../components/loading";
 import ManageList from "../components/manage-list";
 import type { Company } from "../interfaces/global.types";
 
@@ -23,10 +24,15 @@ function Setting() {
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [message, setMessage] = useState("");
+    const [isLoaded, setIsLoaded] = useState(false);
 
     const loadLists = async () => {
-        setCompanies(await getCompanies());
-        setPurposes((await api.get(API_URL.GetPurposeList)).data);
+        try {
+            setCompanies(await getCompanies());
+            setPurposes((await api.get(API_URL.GetPurposeList)).data);
+        } finally {
+            setIsLoaded(true);
+        }
     };
 
     // run an action, then reload the lists; show any server error
@@ -52,8 +58,10 @@ function Setting() {
     };
 
     useEffect(() => {
-        loadLists();
+        loadLists().catch((error) => setMessage(errorMessage(error)));
     }, []);
+
+    if (!isLoaded) return <LoadingScreen label="Loading settings..." />;
 
     return (
         <div className="min-h-screen bg-[#f4f6fb] p-[26px]">

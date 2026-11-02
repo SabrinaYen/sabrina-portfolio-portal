@@ -2,19 +2,27 @@ import { useState } from "react";
 import { api, API_URL } from "../api";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/auth-provider";
+import { errorMessage } from "../api/content";
+import { SlowHint } from "../components/loading";
 function Login() {
     const navigate = useNavigate();
     const { login } = useAuth();
     const [username, setUserName] = useState("");
     const [password, setPassword] = useState("");
     const [isShwPwd, setIsShwPwd] = useState(false);
+    const [isSigningIn, setIsSigningIn] = useState(false);
+    const [error, setError] = useState("");
     const handleSubmit = async (e: React.BaseSyntheticEvent) => {
         e.preventDefault();
-        const req = await api.post(API_URL.Login, { username: username, password: password })
-        if (req?.status === 200) {
-            const { access_token } = req?.data || {};
-            await login(access_token);
+        setIsSigningIn(true);
+        setError("");
+        try {
+            const req = await api.post(API_URL.Login, { username: username, password: password });
+            await login(req.data.access_token);
             navigate("/dashboard", { replace: true });
+        } catch (err) {
+            setError(errorMessage(err));
+            setIsSigningIn(false);
         }
     }
     const handleShowPwd = () => {
@@ -93,12 +101,18 @@ function Login() {
                             </div>
                         </div>
 
+                        {error && <p className="text-sm text-red-600">{error}</p>}
+
                         <button
                             type="submit"
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg py-3 transition-colors cursor-pointer"
+                            disabled={isSigningIn}
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg py-3 transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-wait"
                         >
-                            Sign in
+                            {isSigningIn ? "Signing in..." : "Sign in"}
                         </button>
+                        <div className="flex justify-center">
+                            <SlowHint active={isSigningIn} />
+                        </div>
                     </form>
 
                 </div>

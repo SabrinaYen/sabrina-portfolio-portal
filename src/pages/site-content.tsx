@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getCompanies, errorMessage, loadSiteData, saveSiteData } from "../api/content";
 import { AddButton, BiField, Field, SectionCard } from "../components/fields";
 import { biProps, inputClass } from "../components/field-helpers";
+import LoadingScreen from "../components/loading";
 import ExperienceCard from "../components/site-content/experience-card";
 import LinkRow from "../components/site-content/link-row";
 import ProjectCard from "../components/site-content/project-card";
@@ -29,6 +30,7 @@ function SiteContent() {
     const [data, setData] = useState<SiteData>(emptyData);
     const [message, setMessage] = useState("");
     const [isSaving, setIsSaving] = useState(false);
+    const [hasLoaded, setHasLoaded] = useState(false);
     const { content, projects, experience, skills, links, terminalLines, companies } = data;
 
     // replace one section of the page data
@@ -44,6 +46,8 @@ function SiteContent() {
             setData(await loadSiteData());
         } catch (error) {
             setMessage(`Could not load: ${errorMessage(error)}`);
+        } finally {
+            setHasLoaded(true);
         }
     };
 
@@ -67,6 +71,8 @@ function SiteContent() {
     useEffect(() => {
         load();
     }, []);
+
+    if (!hasLoaded) return <LoadingScreen label="Loading your content..." />;
 
     return (
         <>

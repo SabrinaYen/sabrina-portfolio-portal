@@ -9,7 +9,10 @@ export const getCompanies = async (): Promise<Company[]> => {
 
 // Turn an axios error into a message we can show on screen.
 export const errorMessage = (error: unknown) => {
-    if (axios.isAxiosError(error)) return error.response?.data?.detail ?? error.message;
+    if (axios.isAxiosError(error)) {
+        if (!error.response) return "Can't reach the server. If it was idle, wait a minute and try again.";
+        return error.response.data?.detail ?? error.message;
+    }
     return error instanceof Error ? error.message : "Something went wrong";
 };
 

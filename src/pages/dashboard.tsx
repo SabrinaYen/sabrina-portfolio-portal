@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { api, API_URL } from "../api";
 import { errorMessage } from "../api/content";
 import { useAuth } from "../auth/auth-provider";
+import LoadingScreen from "../components/loading";
 import type { ActivityLog, VisitStats } from "../interfaces/global.types";
 
 function StatCard({ label, value }: { label: string; value: number }) {
@@ -51,6 +52,8 @@ function Dashboard() {
             })
             .catch((e) => setError(errorMessage(e)));
     }, [user]);
+
+    if (!stats && !error) return <LoadingScreen label="Loading your dashboard..." />;
 
     const busiestDay = Math.max(1, ...(stats?.last7.map((day) => day.count) ?? []));
 

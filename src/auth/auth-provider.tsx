@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import type { ReactNode } from "react";
 import { api, API_URL } from "../api";
+import LoadingScreen from "../components/loading";
 
 interface User {
     username: string;
@@ -57,6 +58,6 @@ export function useAuth() {
 }
 export default function ProtectedRoute() {
     const { user, loading } = useAuth();
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <LoadingScreen label="Checking your login..." />;
     return user ? <Outlet /> : <Navigate to="/login" replace />;
 }
